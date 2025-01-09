@@ -3,43 +3,41 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: donghwi2 <donghwi2@student.42gyeongsan.    +#+  +:+       +#+         #
+#    By: donghwi2 <donghwi2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/02 17:37:26 by donghwi2          #+#    #+#              #
-#    Updated: 2025/01/02 17:37:28 by donghwi2         ###   ########.fr        #
+#    Updated: 2025/01/09 12:51:56 by donghwi2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo
+NAME		=	philo
+CC			=	cc
+CFLAGS		=	-Wall -Wextra -Werror #-g -fsanitize=thread
+LIBS		=	-pthread
+RM			=	rm -f
+SRCS_DIR	=	source/
+SRCS		=	main.c \
+				init.c \
+				philo_routin.c \
+				util.c
+SRCS_PREFIX	=	$(addprefix $(SRCS_DIR), $(SRCS))
+OBJS		=	$(SRCS_PREFIX:.c=.o)
+INC			=	-I./include
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./include
-LIBS = -pthread
-RM = rm -f
+all		:	$(NAME)
 
-SRCS_DIR = source/
-SRCS = main.c \
-       init.c \
-       philo_routin.c \
-       util.c
-
-SRCS_PREFIX = $(addprefix $(SRCS_DIR), $(SRCS))
-OBJS = $(SRCS_PREFIX:.c=.o)
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
+$(NAME)	:	$(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o		:	%.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(INC)
 
-clean:
+clean	:
 	$(RM) $(OBJS)
 
-fclean: clean
+fclean	:	clean
 	$(RM) $(NAME)
 
-re: fclean all
+re		:	fclean all
 
-.PHONY: all clean fclean re
+.PHONY	:	all clean fclean re
